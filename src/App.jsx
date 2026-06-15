@@ -9,17 +9,15 @@ import AddTask from './pages/AddTask';
 function App() {
   return (
     <BrowserRouter>
-      <div className="container mt-5">
-        <nav>
-          <NavLink to="/">Lista Task</NavLink>
-          {' | '}
-          <NavLink to="/add-task">Aggiungi Task</NavLink>
-        </nav>
+      <div className="container ">
+        <div className="p-3">
+          <Header></Header>
 
-        <Routes>
-          <Route path="/" element={<TaskList />} />
-          <Route path="/add-task" element={<AddTask />} />
-        </Routes>
+          <Routes>
+            <Route path="/" element={<TaskList />} />
+            <Route path="/add-task" element={<AddTask />} />
+          </Routes>
+        </div>
       </div>
     </BrowserRouter>
   );
