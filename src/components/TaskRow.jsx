@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { GlobalContext } from '../context/GlobalContext';
 
 function TaskRow() {
@@ -6,25 +6,27 @@ function TaskRow() {
 
   return (
     <tbody>
-      {tasks.map((element, i) => {
-        return (
-          <tr key={i}>
-            <td>{element.title}</td>
-            <td
-              className={
-                element.status === 'To do'
-                  ? 'bg-danger'
-                  : element.status === 'Doing'
-                    ? 'bg-warning'
-                    : 'bg-success'
-              }
-            >
-              {element.status}
-            </td>
-            <td>{element.createdAt}</td>
-          </tr>
-        );
-      })}
+      {useMemo(() => {
+        return tasks.map((element) => {
+          return (
+            <tr key={element.id}>
+              <td>{element.title}</td>
+              <td
+                className={
+                  element.status === 'To do'
+                    ? 'bg-danger text-white'
+                    : element.status === 'Doing'
+                      ? 'bg-warning'
+                      : 'bg-success text-white'
+                }
+              >
+                {element.status}
+              </td>
+              <td>{element.createdAt}</td>
+            </tr>
+          );
+        });
+      }, [tasks])}
     </tbody>
   );
 }

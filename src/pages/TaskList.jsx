@@ -6,16 +6,19 @@ function TaskList() {
   const { tasks } = useContext(GlobalContext);
 
   return (
-    <table className="table">
-      <thead>
-        <tr>
-          <th>Nome</th>
-          <th>Stato</th>
-          <th>Data di Creazione</th>
-        </tr>
-      </thead>
-      <TaskRow></TaskRow>
-    </table>
+    <>
+      <h1>Lista Task</h1>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Stato</th>
+            <th>Data di Creazione</th>
+          </tr>
+        </thead>
+        <TaskRow></TaskRow>
+      </table>
+    </>
   );
 }
 export default TaskList;
