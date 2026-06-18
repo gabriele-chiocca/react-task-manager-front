@@ -13,9 +13,6 @@ function useTasks() {
     return fetch(`${apiurl}/tasks`, {
       method: `POST`,
       body: taskConvertedJson,
-      headers: {
-        'Content-type': 'application/json',
-      },
     })
       .then((res) => res.json())
       .then((data) => {
@@ -28,8 +25,22 @@ function useTasks() {
       });
   }
 
-  function removeTask() {
-    return;
+  function removeTask(taskId) {
+    return fetch(`${apiurl}/tasks/${taskId}`, {
+      method: `DELETE`,
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success === true) {
+          setTask(tasks.filter((task) => task.id !== taskId));
+        } else {
+          console.log(data.message);
+          throw new Error(data.message);
+        }
+      });
   }
 
   function updateTask() {
@@ -45,7 +56,7 @@ function useTasks() {
       });
   }, []);
 
-  return [tasks, setTask, addTask];
+  return [tasks, setTask, addTask, removeTask];
 }
 
 export default useTasks;
