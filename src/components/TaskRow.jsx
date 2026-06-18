@@ -1,5 +1,6 @@
 import { useContext, useMemo } from 'react';
 import { GlobalContext } from '../context/GlobalContext';
+import { Link } from 'react-router-dom';
 
 function TaskRow() {
   const { tasks } = useContext(GlobalContext);
@@ -10,7 +11,9 @@ function TaskRow() {
         return tasks.map((element) => {
           return (
             <tr key={element.id}>
-              <td>{element.title}</td>
+              <td>
+                <Link to={`/task/${element.id}`}>{element.title}</Link>
+              </td>
               <td
                 className={
                   element.status === 'To do'

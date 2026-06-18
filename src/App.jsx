@@ -6,6 +6,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import TaskList from './pages/TaskList';
 import AddTask from './pages/AddTask';
+import TaskDetail from './pages/TaskDetail';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Routes>
               <Route path="/" element={<TaskList />} />
               <Route path="/add-task" element={<AddTask />} />
+              <Route path="/task/:id" element={<TaskDetail />} />
             </Routes>
           </div>
         </div>
