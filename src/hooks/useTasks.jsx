@@ -5,8 +5,27 @@ function useTasks() {
 
   const [tasks, setTask] = useState([]);
 
-  function addTask() {
-    return;
+  function addTask(newTask) {
+    console.log(newTask);
+
+    const taskConvertedJson = JSON.stringify(newTask);
+
+    return fetch(`${apiurl}/tasks`, {
+      method: `POST`,
+      body: taskConvertedJson,
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success === true) {
+          setTask([...tasks, data.task]);
+        } else {
+          console.log(data.message);
+          throw new Error(data.message);
+        }
+      });
   }
 
   function removeTask() {
@@ -26,7 +45,7 @@ function useTasks() {
       });
   }, []);
 
-  return [tasks, setTask];
+  return [tasks, setTask, addTask];
 }
 
 export default useTasks;

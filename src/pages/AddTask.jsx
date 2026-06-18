@@ -1,8 +1,10 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useContext } from 'react';
+import { GlobalContext } from '../context/GlobalContext';
 
 function AddTask() {
   const [nameTask, setNameTask] = useState('');
   const [nameTouched, setNameTouched] = useState(false);
+  const { tasks, addTask } = useContext(GlobalContext);
 
   const descriptionRef = useRef();
   const statusRef = useRef();
@@ -30,8 +32,23 @@ function AddTask() {
          Status: ${statusRef.current.value}
       `,
       );
-    } else {
-      console.log('Non hai compilato i campi in modo corretto');
+
+      addTask({
+        title: nameTask,
+        description: descriptionRef.current.value,
+        status: statusRef.current.value,
+      })
+        .then(() => {
+          alert('Task creata correttamente');
+
+          setNameTask('');
+          setNameTouched(false);
+          statusRef.current.value = 'To do';
+          descriptionRef.current.value = '';
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
     }
   }
 
@@ -97,7 +114,7 @@ function AddTask() {
           </div>
 
           <div>
-            <button className="btn btn-primary" type="sumbit">
+            <button className="btn btn-primary" type="submit">
               Invia
             </button>
           </div>

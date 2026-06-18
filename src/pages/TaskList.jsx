@@ -3,7 +3,7 @@ import { GlobalContext } from '../context/GlobalContext';
 import TaskRow from '../components/TaskRow';
 
 function TaskList() {
-  const { tasks } = useContext(GlobalContext);
+  const { tasks, addTask } = useContext(GlobalContext);
 
   return (
     <>
@@ -18,6 +18,18 @@ function TaskList() {
         </thead>
         <TaskRow></TaskRow>
       </table>
+      <button
+        className="btn btn-primary"
+        onClick={() =>
+          addTask({
+            title: 'ds',
+            description: 'd',
+            status: 'To do',
+          })
+        }
+      >
+        Clicca
+      </button>
     </>
   );
 }
