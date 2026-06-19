@@ -43,8 +43,27 @@ function useTasks() {
       });
   }
 
-  function updateTask() {
-    return;
+  function updateTask(task) {
+    console.log(task);
+
+    const taskConvertedJson = JSON.stringify(task);
+
+    return fetch(`${apiurl}/tasks/${task.id}`, {
+      method: `PUT`,
+      body: taskConvertedJson,
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success === true) {
+          setTask(tasks.map((t) => (t.id === data.task.id ? data.task : t)));
+        } else {
+          console.log(data.message);
+          throw new Error(data.message);
+        }
+      });
   }
 
   useEffect(() => {
@@ -56,7 +75,7 @@ function useTasks() {
       });
   }, []);
 
-  return [tasks, setTask, addTask, removeTask];
+  return [tasks, setTask, addTask, removeTask, updateTask];
 }
 
 export default useTasks;
