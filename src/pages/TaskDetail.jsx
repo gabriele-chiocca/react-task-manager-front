@@ -1,10 +1,12 @@
 import { GlobalContext } from '../context/GlobalContext';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import Modal from '../components/Modal';
 
 function TaskDetail() {
   const { tasks, removeTask } = useContext(GlobalContext);
+  const [show, setShow] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -26,16 +28,27 @@ function TaskDetail() {
   }
 
   return (
-    <div className="container">
-      <h1>{task.title}</h1>
-      <p>{task.description}</p>
-      <p>{task.status}</p>
-      <p>{task.createdAt}</p>
+    <>
+      <div className="container">
+        <h1>{task.title}</h1>
+        <p>{task.description}</p>
+        <p>{task.status}</p>
+        <p>{task.createdAt}</p>
 
-      <button className="btn btn-danger" onClick={remove}>
-        Elimina Task
-      </button>
-    </div>
+        <button className="btn btn-danger" onClick={(e) => setShow(true)}>
+          Elimina Task
+        </button>
+      </div>
+      {show && (
+        <Modal
+          title={task.title}
+          content={task.description}
+          show={show}
+          onClose={(e) => setShow(false)}
+          onConfirm={remove}
+        ></Modal>
+      )}
+    </>
   );
 }
 
