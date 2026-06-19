@@ -1,6 +1,6 @@
 import { createPortal } from 'react-dom';
 
-function Modal({ title, content, show, onClose, onConfirm }) {
+function Modal({ title, content, show, onClose, onConfirm, confirmText }) {
   if (!show) {
     return null;
   }
@@ -25,16 +25,14 @@ function Modal({ title, content, show, onClose, onConfirm }) {
                 onClick={onClose}
               ></button>
             </div>
-            <div className="modal-body">
-              <p>{content}</p>
-            </div>
+            <div className="modal-body">{content}</div>
             <div className="modal-footer">
               <button
                 type="button"
-                className="btn btn-danger"
+                className={`btn ${confirmText === `Elimina` ? `btn-danger` : `btn-success`}`}
                 onClick={onConfirm}
               >
-                Elimina
+                {confirmText}
               </button>
               <button
                 type="button"
