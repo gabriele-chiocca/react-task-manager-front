@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useMemo, useState, useCallback } from 'react';
 import { GlobalContext } from '../context/GlobalContext';
 import TaskRow from '../components/TaskRow';
 
@@ -7,6 +7,24 @@ function TaskList() {
 
   const [sortBy, setSortBy] = useState('createdAt');
   const [sortOrder, setSortOrder] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  function debounce(callback, delay) {
+    let timer;
+    return (value) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        callback(value);
+      }, delay);
+    };
+  }
+
+  const debounceSearch = useCallback(
+    debounce((value) => {
+      searchQuery(value);
+    }, 500),
+    [],
+  );
 
   const orderTitle = (e) => {
     if (sortBy === 'title') {
@@ -36,7 +54,11 @@ function TaskList() {
   };
 
   const sortedTasks = useMemo(() => {
-    const tasksCopy = [...tasks];
+    const filteredTasks = tasks.filter((task) =>
+      task.title.toLowerCase().includes(searchQuery.toLowerCase()),
+    );
+
+    const tasksCopy = [...filteredTasks];
 
     if (sortBy === 'title') {
       tasksCopy.sort((a, b) => {
@@ -69,11 +91,22 @@ function TaskList() {
 
       return tasksCopy;
     }
-  }, [tasks, sortBy, sortOrder]);
+  }, [tasks, sortBy, sortOrder, searchQuery]);
 
   return (
     <>
       <h1>Lista Task</h1>
+
+      <div className="input-group mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Cerca qui la task"
+          aria-label="Cerca qui la task"
+          aria-describedby="basic-addon2"
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
       <table className="table">
         <thead>
           <tr>
