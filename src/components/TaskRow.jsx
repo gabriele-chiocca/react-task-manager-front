@@ -1,10 +1,8 @@
 import { useContext, useMemo } from 'react';
-import { GlobalContext } from '../context/GlobalContext';
+
 import { Link } from 'react-router-dom';
 
-function TaskRow() {
-  const { tasks } = useContext(GlobalContext);
-
+function TaskRow({ tasks }) {
   return (
     <tbody>
       {useMemo(() => {

@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { GlobalContext } from '../context/GlobalContext';
 import TaskRow from '../components/TaskRow';
 
@@ -35,6 +35,42 @@ function TaskList() {
     }
   };
 
+  const sortedTasks = useMemo(() => {
+    const tasksCopy = [...tasks];
+
+    if (sortBy === 'title') {
+      tasksCopy.sort((a, b) => {
+        return a.title.localeCompare(b.title) * sortOrder;
+      });
+
+      return tasksCopy;
+    }
+
+    if (sortBy === 'status') {
+      const statusOrder = {
+        'To do': 0,
+        Doing: 1,
+        Done: 2,
+      };
+      tasksCopy.sort((a, b) => {
+        return (statusOrder[a.status] - statusOrder[b.status]) * sortOrder;
+      });
+
+      return tasksCopy;
+    }
+
+    if (sortBy === 'createdAt') {
+      tasksCopy.sort((a, b) => {
+        return (
+          (new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()) *
+          sortOrder
+        );
+      });
+
+      return tasksCopy;
+    }
+  }, [tasks, sortBy, sortOrder]);
+
   return (
     <>
       <h1>Lista Task</h1>
@@ -46,7 +82,8 @@ function TaskList() {
             <th onClick={orderCreatedAt}>Data di Creazione</th>
           </tr>
         </thead>
-        <TaskRow></TaskRow>
+
+        <TaskRow tasks={sortedTasks}></TaskRow>
       </table>
       <button
         className="btn btn-primary"

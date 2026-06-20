@@ -13,6 +13,9 @@ function useTasks() {
     return fetch(`${apiurl}/tasks`, {
       method: `POST`,
       body: taskConvertedJson,
+      headers: {
+        'Content-type': 'application/json',
+      },
     })
       .then((res) => res.json())
       .then((data) => {
