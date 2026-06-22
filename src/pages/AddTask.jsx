@@ -14,7 +14,7 @@ function AddTask() {
   const verifyNameTask = () => {
     if (nameTask === '') {
       return console.log('Nome non compilato');
-    } else if (nameTask.includes(symbols)) {
+    } else if ([...nameTask].some((char) => symbols.includes(char))) {
       return console.log('Il nome contiene simboli speciali');
     } else {
       console.log('Nome compilato correttamente');
@@ -114,7 +114,11 @@ function AddTask() {
           </div>
 
           <div>
-            <button className="btn btn-primary" type="submit">
+            <button
+              className="btn btn-primary"
+              type="submit"
+              disabled={!verifyNameTask()}
+            >
               Invia
             </button>
           </div>
